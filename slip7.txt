@@ -1,0 +1,86 @@
+<!--Q.1) Create angular JS Application that show the current Date and Time of the System (Use Interval
+Service)-->
+<!DOCTYPE html>
+<html ng-app="DateTimeApp">
+<head>
+    <title>Current Date and Time</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <script>
+        var app = angular.module('DateTimeApp', []);
+
+        app.controller('DateTimeController', function($scope, $interval) {
+            $scope.currentDateTime = new Date();
+
+            var updateDateTime = function() {
+                $scope.currentDateTime = new Date();
+            };
+
+            // Update the date and time every second
+            var intervalPromise = $interval(updateDateTime, 1000);
+
+            // Cancel the interval when the controller is destroyed to avoid memory leaks
+            $scope.$on('$destroy', function() {
+                $interval.cancel(intervalPromise);
+            });
+        });
+    </script>
+</head>
+<body>
+
+<div ng-controller="DateTimeController">
+    <h1>Current Date and Time</h1>
+    <p>{{ currentDateTime | date : 'fullDate' }}</p>
+    <p>{{ currentDateTime | date : 'shortTime' }}</p>
+</div>
+
+</body>
+</html>
+
+
+// Q2.js
+//2.Create a js file named main.js for event-driven application. There should be a
+// main loop that listens for events, and then triggers a callback function when one
+// of those events is detected.
+
+// Define an object to hold event listeners and their corresponding callback functions
+const eventListeners = {};
+
+// Function to add event listeners
+function addEventListener(eventName, callback) {
+    if (!eventListeners[eventName]) {
+        eventListeners[eventName] = [];
+    }
+    eventListeners[eventName].push(callback);
+}
+
+// Function to trigger an event
+function triggerEvent(eventName, data) {
+    const callbacks = eventListeners[eventName];
+    if (callbacks) {
+        callbacks.forEach(callback => {
+            callback(data);
+        });
+    }
+}
+
+// Example usage:
+// Add event listeners
+addEventListener('click', data => {
+    console.log('Click event detected!');
+    console.log('Data:', data);
+});
+
+addEventListener('keypress', data => {
+    console.log('Keypress event detected!');
+    console.log('Data:', data);
+});
+
+// Main loop that listens for events
+setInterval(() => {
+    // Simulate events being detected
+    const randomEvent = Math.random() < 0.5 ? 'click' : 'keypress';
+    const eventData = Math.random() < 0.5 ? 'EventData1' : 'EventData2';
+    
+    // Trigger the event
+    triggerEvent(randomEvent, eventData);
+}, 2000); // Every 2 seconds

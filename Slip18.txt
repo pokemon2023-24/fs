@@ -1,0 +1,80 @@
+//Slip 18
+//Q.1) Using node js create a User Login System 
+
+//<!--Node.js-->
+
+const express = require('express');
+const fs = require('fs');
+const bodyParser = require('body-parser');
+const app = express();
+
+app.use(bodyParser.urlencoded({ extended: true }));
+
+app.get('/', (req, res) => {
+    res.send(`
+        <form action="/" method="post">
+            <label for="user">Login:</label>
+            <input type="text" name="user" id="user" required><br><br>
+            <label for="pwd">Password:</label>
+            <input type="text" name="pwd" id="pwd" required><br><br>
+            <button type="submit">Login</button>
+        </form>
+    `);
+});
+
+app.post('/', (req, res) => {
+    const username = req.body.user;
+    const password = req.body.pwd;
+
+    if(username=="Lalu" && password=="987654")
+    {
+        res.send('login successful');
+    }
+    else
+    {
+        res.send('Incorrect username or password');
+    }
+});
+
+app.listen(7000);
+
+----------------------------------------------------------------------------------------------------------------------------------
+//Q.2) Create a node.js file that Select all records from the "customers" table, and find the customers 
+whose name starts from ‘A’. 
+//<!--Node.js-->
+
+// Import required packages
+const mysql = require('mysql');
+
+// Create a connection to the database
+const connection = mysql.createConnection({
+  host: 'localhost',
+  user: 'root',
+  password: 'root',
+  database: 'customers'
+});
+
+// Connect to the database
+connection.connect((err) => {
+  if (err) {
+    console.error('Error connecting to database:', err);
+    return;
+  }
+  console.log('Connected to database successfully');
+});
+
+// Query to select customers whose name starts with 'A'
+const query = "SELECT * FROM cuto WHERE name LIKE 'A%'";
+
+// Execute the query
+connection.query(query, (error, results, fields) => {
+  if (error) {
+    console.error('Error executing query:', error);
+    return;
+  }
+  console.log('Customers whose name starts with "A":', results);
+});
+
+// Close the connection
+connection.end();
+

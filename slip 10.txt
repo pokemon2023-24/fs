@@ -1,0 +1,94 @@
+//slip 10
+//Q.1) Create a Node.js file that demonstrate create college database and table in MySQL
+const mysql = require('mysql');
+
+// Create connection to MySQL
+const connection = mysql.createConnection({
+  host: 'localhost',
+  user: 'root',
+  password: 'root',
+});
+
+// Connect to MySQL
+connection.connect((err) => {
+  if (err) {
+    console.error('Error connecting to MySQL: ' + err.stack);
+    return;
+  }
+  console.log('Connected to MySQL as id ' + connection.threadId);
+  
+  // Create the college database
+  connection.query('CREATE DATABASE IF NOT EXISTS college', (err, result) => {
+    if (err) throw err;
+    console.log('College database created');
+  });
+
+  // Use the college database
+  connection.query('USE college', (err, result) => {
+    if (err) throw err;
+    console.log('Using college database');
+  });
+
+  // Create the students table
+  const createTableQuery = `
+    CREATE TABLE IF NOT EXISTS students (
+      id INT AUTO_INCREMENT PRIMARY KEY,
+      name VARCHAR(255) NOT NULL,
+      age INT,
+      major VARCHAR(255)
+    )
+  `;
+  connection.query(createTableQuery, (err, result) => {
+    if (err) throw err;
+    console.log('Students table created');
+  });
+
+  // Close MySQL connection
+  connection.end((err) => {
+    if (err) {
+      console.error('Error closing MySQL connection: ' + err.stack);
+      return;
+    }
+    console.log('MySQL connection closed');
+  });
+});
+
+
+//Q.2) Write node js script to build Your Own Node.js Module. Use require (‘http’) module is a builtin Node module that invokes the functionality of the HTTP library to create a local server. Also
+//use the export statement to make functions in your module available externally. Create a new
+//text file to contain the functions in your module called, “modules.js” and add this function to
+//return today’s date and time.
+
+// server.js
+
+// Importing the HTTP module
+const http = require('http');
+
+// Function to return today's date and time
+function getCurrentDateTime() {
+    const currentDate = new Date();
+    return currentDate.toLocaleString();
+}
+
+// Creating a server
+const server = http.createServer((req, res) => {
+    res.writeHead(200, { 'Content-Type': 'text/plain' });
+    // Using the function to get the current date and time
+    const dateTime = getCurrentDateTime();
+    res.end(`Current date and time: ${dateTime}`);
+});
+
+// Setting the server to listen on port 3000
+const PORT = 3000;
+server.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+});
+0.0
+
+
+//create a module file also
+//modules.js
+const myModule = require('./modules');
+
+// Accessing the exported function
+console.log(myModule.getCurrentDateTime());

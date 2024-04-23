@@ -1,0 +1,158 @@
+//slip4
+//Q.1) Using node js create an eLearning System.
+
+const express = require('express');
+const bodyParser = require('body-parser');
+const session = require('express-session');
+
+const app = express();
+const port = 7000;
+
+// Sample data for users and courses (to be replaced with a database)
+let users = [];
+let courses = [];
+
+// Middleware to parse JSON bodies
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+
+// Session middleware
+app.use(session({
+    secret: 'secret-key',
+    resave: false,
+    saveUninitialized: true
+}));
+
+// Route to display the homepage
+app.get('/', (req, res) => {
+    // Check if user is logged in
+    if (req.session.loggedIn) {
+        res.send(`
+            <h1>Welcome ${req.session.username}!</h1>
+            <a href="/courses">View Courses</a><br>
+            <a href="/logout">Logout</a>
+        `);
+    } else {
+        res.send(`
+            <h1>Welcome to the eLearning System</h1>
+            <a href="/login">Login</a><br>
+            <a href="/register">Register</a>
+        `);
+    }
+});
+
+// Route to display the login form
+app.get('/login', (req, res) => {
+    res.send(`
+        <h2>Login</h2>
+        <form action="/login" method="post">
+            <label for="username">Username:</label>
+            <input type="text" name="username" id="username" required><br><br>
+            <label for="password">Password:</label>
+            <input type="password" name="password" id="password" required><br><br>
+            <button type="submit">Login</button>
+        </form>
+    `);
+});
+
+// Route to handle login
+app.post('/login', (req, res) => {
+    const { username, password } = req.body;
+    // Check if username and password match (to be replaced with database query)
+    if (username === "abc" && password === "abc"||username === "abcd" && password === "abcd") {
+        req.session.loggedIn = true;
+        req.session.username = username;
+        res.redirect('/');
+    } else {
+        res.send('Incorrect username or password');
+    }
+});
+
+// Route to display the registration form
+app.get('/register', (req, res) => {
+    res.send(`
+        <h2>Register</h2>
+        <form action="/register" method="post">
+            <label for="username">Username:</label>
+            <input type="text" name="username" id="username" required><br><br>
+            <label for="password">Password:</label>
+            <input type="password" name="password" id="password" required><br><br>
+            <button type="submit">Register</button>
+        </form>
+    `);
+});
+
+// Route to handle registration
+app.post('/register', (req, res) => {
+    const { username, password } = req.body;
+    // Add user to users array (to be replaced with database insertion)
+    users.push({ username, password });
+    res.send('User registered successfully');
+});
+
+// Route to display available courses
+app.get('/courses', (req, res) => {
+    // Display list of courses (to be replaced with database query)
+    res.send(`<h2>Available Courses:</h2>${courses.map(course => `<li>${course}</li>`).join('')}`);
+});
+
+// Route to enroll in a course
+app.post('/enroll', (req, res) => {
+    const { course } = req.body;
+    // Add course enrollment logic here (e.g., add course to user's enrolled courses)
+    res.send(`Enrolled in ${course} successfully`);
+});
+
+// Route to handle logout
+app.get('/logout', (req, res) => {
+    req.session.destroy();
+    res.redirect('/');
+});
+
+app.listen(port, () => {
+    console.log(`Server is running on port ${port}`);
+});
+
+Q.2) Create an HTML form using AngularJS that contain the Student Registration details and
+validate Student first and last name as it should not contain other than alphabets and age should
+be between 18 to 50 and display greeting message depending on current time using ng-show
+(e.g. Good Morning, Good Afternoon, etc.)(Use AJAX).
+<html>
+
+<head>
+    <title>Student Registration</title>
+    <script>
+        function validate() {
+            let fname = document.getElementById('fname').value
+            let lname = document.getElementById('lname').value
+            let age = document.getElementById('age').value
+
+            var charseq = /^[A-Za-z]+$/;
+
+            if (charseq.test(fname) && charseq.test(lname) && age >= 18 && age <= 50) 
+            {
+                alert("Data is Correct")
+            }
+            else if (fname == null && lname == null && age == null)
+            {
+                alert("Fill the Information")
+            }
+            else
+            {
+                alert("Enter the valid details")
+            }
+
+        }
+    </script>
+</head>
+
+<body>
+    <form name="f1">
+        Enter First Name: <input type="text" id="fname"><br><br>
+        Enter Last Name: <input type="text" id="lname"><br><br>
+        Enter Age : <input type="text" id="age"><br><br>
+        <input type="submit" onclick=validate()>
+    </form>
+</body>
+
+</html>

@@ -1,0 +1,78 @@
+Q1 Create a Node.js file that demonstrate create Movie database and table in MySQL
+// app.js
+
+const express = require('express');
+const sqlite3 = require('sqlite3').verbose();
+
+const app = express();
+const PORT = process.env.PORT || 3001;
+
+// Create and connect to SQLite database
+const db = new sqlite3.Database(':memory:');
+
+// Create a table
+db.serialize(() => {
+  db.run("CREATE TABLE users (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT)");
+});
+
+// Express route to fetch all users
+app.get('/users', (req, res) => {
+  db.all("SELECT * FROM users", (err, rows) => {
+    if (err) {
+      res.status(500).json({ error: err.message });
+      return;
+    }
+    res.json({ users: rows });
+  });
+});
+
+// Express route to add a new user
+app.post('/users', (req, res) => {
+  const { name } = req.body;
+  if (!name) {
+    res.status(400).json({ error: 'Name is required' });
+    return;
+  }
+
+  db.run("INSERT INTO users (name) VALUES (?)", [name], function(err) {
+    if (err) {
+      res.status(500).json({ error: err.message });
+      return;
+    }
+    res.json({ id: this.lastID });
+  });
+});
+
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
+});
+--------------------------------------------------------------------------------------------------------------------------------
+Q2 ) Write node js application that transfer a file as an attachment on web and enables browser to
+prompt the user to download file using express js.
+
+// Importing required modules
+const express = require('express');
+const fs = require('fs');
+const path = require('path');
+
+// Create Express application
+const app = express();
+
+// Define route to serve file as an attachment
+app.get('/download', (req, res) => {
+    const filePath = path.join(__dirname, 'Aditya.txt'); // Path to the file to be served
+    const fileName = 'example.txt'; // Name of the file as seen by the user
+
+    // Set headers to specify attachment and filename
+    res.setHeader('Content-Disposition', 'attachment; filename=' + fileName);
+    
+    // Serve the file
+    const fileStream = fs.createReadStream(filePath);
+    fileStream.pipe(res);
+});
+
+// Start the server
+const PORT = 3000;
+app.listen(PORT, () => {
+    console.log(`Server is running on http://localhost:${PORT}`);
+});

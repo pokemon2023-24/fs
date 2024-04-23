@@ -1,0 +1,77 @@
+//Q1.js
+//Q1. Create a Simple Web Server using node js
+const http = require('http');
+
+// Create a server object
+const server = http.createServer((req, res) => {
+    // Set the response HTTP header with HTTP status and Content type
+    res.writeHead(200, {'Content-Type': 'text/plain'});
+
+    // Send the response body as "Hello World!"
+    res.end('Hello MSC Students!!!\n');
+});
+
+// Server listens on port 3000
+const PORT = process.env.PORT || 3000;
+server.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+});
+
+
+<!-- Q2.html -->
+<!-- Q2. Using angular js display the 10 student details in Table format (using ng-repeat
+directive use Array to store data ) -->
+
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Student Details</title>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+</head>
+<body>
+
+<div ng-controller="StudentController">
+    <h2>Student Details</h2>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Student ID</th>
+                <th>Name</th>
+                <th>Age</th>
+                <th>Grade</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="student in students">
+                <td>{{student.id}}</td>
+                <td>{{student.name}}</td>
+                <td>{{student.age}}</td>
+                <td>{{student.grade}}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<script>
+var app = angular.module('myApp', []);
+
+app.controller('StudentController', function($scope) {
+    $scope.students = [
+        { id: 1, name: 'John Doe', age: 20, grade: 'A' },
+        { id: 2, name: 'Jane Smith', age: 22, grade: 'B' },
+        { id: 3, name: 'Alice Johnson', age: 21, grade: 'A' },
+        { id: 4, name: 'Bob Brown', age: 19, grade: 'C' },
+        { id: 5, name: 'Eva Lee', age: 20, grade: 'A' },
+        { id: 6, name: 'Michael Clark', age: 23, grade: 'B' },
+        { id: 7, name: 'Sophia Martin', age: 22, grade: 'A' },
+        { id: 8, name: 'David White', age: 21, grade: 'B' },
+        { id: 9, name: 'Olivia Wilson', age: 20, grade: 'A' },
+        { id: 10, name: 'James Taylor', age: 19, grade: 'C' }
+    ];
+});
+</script>
+
+</body>
+</html>

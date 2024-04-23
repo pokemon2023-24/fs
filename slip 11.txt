@@ -1,0 +1,94 @@
+//slip 11
+//Q.1) Create a Node.js file that demonstrates create Movie database and table in MySQL.
+const mysql = require('mysql');
+
+// Create a connection to MySQL
+const connection = mysql.createConnection({
+  host: 'localhost',
+  user: 'root',
+  password: 'root'
+});
+
+// Connect to MySQL
+connection.connect((err) => {
+  if (err) {
+    console.error('Error connecting to MySQL: ' + err.stack);
+    return;
+  }
+  
+  console.log('Connected to MySQL as id ' + connection.threadId);
+
+  // Create a database
+  connection.query('CREATE DATABASE IF NOT EXISTS movie_database', (err, result) => {
+    if (err) {
+      console.error('Error creating database: ' + err.stack);
+      return;
+    }
+    console.log('Movie database created');
+  });
+
+  // Use the created database
+  connection.query('USE movie_database', (err, result) => {
+    if (err) {
+      console.error('Error using database: ' + err.stack);
+      return;
+    }
+    console.log('Using movie_database');
+  });
+
+  // Create a table
+  const createTableQuery = `
+    CREATE TABLE IF NOT EXISTS movies (
+      id INT AUTO_INCREMENT PRIMARY KEY,
+      title VARCHAR(255) NOT NULL,
+      director VARCHAR(255),
+      year INT
+    )
+  `;
+  connection.query(createTableQuery, (err, result) => {
+    if (err) {
+      console.error('Error creating table: ' + err.stack);
+      return;
+    }
+    console.log('Movies table created');
+  });
+
+  // Close the connection
+  connection.end((err) => {
+    if (err) {
+      console.error('Error closing connection: ' + err.stack);
+      return;
+    }
+    console.log('Connection closed');
+  });
+});
+
+Q.2) Write node js application that transfer a file as an attachment on web and enables browser to
+prompt the user to download file using express js.
+
+// Importing required modules
+const express = require('express');
+const fs = require('fs');
+const path = require('path');
+
+// Create Express application
+const app = express();
+
+// Define route to serve file as an attachment
+app.get('/download', (req, res) => {
+    const filePath = path.join(__dirname, 'Aditya.txt'); // Path to the file to be served
+    const fileName = 'example.txt'; // Name of the file as seen by the user
+
+    // Set headers to specify attachment and filename
+    res.setHeader('Content-Disposition', 'attachment; filename=' + fileName);
+    
+    // Serve the file
+    const fileStream = fs.createReadStream(filePath);
+    fileStream.pipe(res);
+});
+
+// Start the server
+const PORT = 3000;
+app.listen(PORT, () => {
+    console.log(`Server is running on http://localhost:${PORT}`);
+});

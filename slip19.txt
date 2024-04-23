@@ -1,0 +1,91 @@
+//Q.1) Create a Node.js file that will convert the output "hello world!" into upper-case letters.
+// helloWorldToLower.js
+
+// Define the input string
+const inputString = "hello world!";
+
+// Convert the input string to lower case
+const upperCaseString = inputString.toUpperCase();
+
+// Print the lower case string
+console.log(upperCaseString);
+
+
+<!--Q.2) Using angular js create a SPA to accept the details such as name, mobile number, pin code and
+email address and make validation. Name should contain character only, address should contain
+SPPU M.Sc. Computer Science Syllabus 2023-24, mobile number should contain only 10 digit,
+Pin code should contain only 6 digit, email id should contain only one @, . Symbol.--->
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SPA with AngularJS</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+  <script>
+    var app = angular.module('myApp', []);
+
+    app.controller('FormController', function($scope) {
+      $scope.formData = {};
+
+      $scope.submitForm = function() {
+        // Validation logic
+        if (!isValidName($scope.formData.name)) {
+          alert("Please enter a valid name with characters only.");
+          return;
+        }
+        if (!isValidMobileNumber($scope.formData.mobile)) {
+          alert("Please enter a valid 10-digit mobile number.");
+          return;
+        }
+        if (!isValidPinCode($scope.formData.pincode)) {
+          alert("Please enter a valid 6-digit pin code.");
+          return;
+        }
+        if (!isValidEmail($scope.formData.email)) {
+          alert("Please enter a valid email address.");
+          return;
+        }
+        
+        // If all validations pass, you can proceed with form submission or further processing
+        alert("Form submitted successfully!");
+      };
+
+      // Validation functions
+      function isValidName(name) {
+        return /^[a-zA-Z ]+$/.test(name);
+      }
+
+      function isValidMobileNumber(mobile) {
+        return /^\d{10}$/.test(mobile);
+      }
+
+      function isValidPinCode(pincode) {
+        return /^\d{6}$/.test(pincode);
+      }
+
+      function isValidEmail(email) {
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+      }
+    });
+  </script>
+</head>
+<body ng-controller="FormController">
+  <h2>Enter Details</h2>
+  <form ng-submit="submitForm()">
+    <label>Name:</label>
+    <input type="text" ng-model="formData.name" required><br><br>
+    
+    <label>Mobile Number:</label>
+    <input type="text" ng-model="formData.mobile" required><br><br>
+    
+    <label>Pin Code:</label>
+    <input type="text" ng-model="formData.pincode" required><br><br>
+    
+    <label>Email Address:</label>
+    <input type="email" ng-model="formData.email" required><br><br>
+    
+    <button type="submit">Submit</button>
+  </form>
+</body>
+</html>

@@ -1,0 +1,46 @@
+<!--Q.1) Create an angular JS Application that shows the location of the current web page. -->
+<!DOCTYPE html>
+<html ng-app="locationApp">
+<head>
+    <title>Current Location App</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <script>
+        var locationApp = angular.module('locationApp', []);
+
+        locationApp.controller('LocationController', ['$scope', '$location', function($scope, $location) {
+            $scope.currentLocation = $location.absUrl();
+        }]);
+    </script>
+</head>
+<body ng-controller="LocationController">
+    <h1>Current Location</h1>
+    <p>{{ currentLocation }}</p>
+</body>
+</html>
+
+..................................................................................................................................................
+
+//Q.2) Create a js file named main.js for event-driven application. There should be a main loop that listens for events, and then triggers a //callback function when one of those events is detected. 
+// Import any necessary modules
+// For example, if you're using Node.js, you might use 'events' module
+const EventEmitter = require('events');
+
+// Create an instance of EventEmitter
+const eventEmitter = new EventEmitter();
+
+// Define callback function for the event
+const callbackFunction = () => {
+    console.log('Event detected! Callback function triggered.');
+    // Add your desired functionality here
+};
+
+// Add event listener
+eventEmitter.on('customEvent', callbackFunction);
+
+// Main loop to listen for events
+console.log('Event listener started. Waiting for events...');
+// You can replace this loop with any appropriate method depending on your environment
+setInterval(() => {
+    // Simulate an event being detected
+    eventEmitter.emit('customEvent');
+}, 1000); // Change the interval as needed

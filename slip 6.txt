@@ -1,0 +1,78 @@
+<!-- slip 6 -->
+<!--Q1 write angular JS by using ng-click Directive to display an alert message after clicking 
+the element-->
+
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AngularJS Example</title>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+</head>
+<body>
+
+<div ng-controller="MyController">
+    <button ng-click="displayAlert()">Click me</button>
+</div>
+
+<script>
+// Define the AngularJS app module
+var app = angular.module('myApp', []);
+
+// Define a controller for the app
+app.controller('MyController', function($scope) {
+    // Function to display the alert message
+    $scope.displayAlert = function() {
+        alert('Button clicked!');
+    };
+});
+</script>
+
+</body>
+</html>
+
+//Q2 Create a Node.js file that opens the requested file and returns the content to the client. If
+// anything goes wrong, throw a 404 error 
+
+const http = require('http');
+const fs = require('fs');
+const path = require('path');
+
+const server = http.createServer((req, res) => {
+    // Extracting the requested file name from the URL
+    const fileName = req.url === '/' ? 'index.html' : req.url.slice(1);
+
+    // Constructing the file path
+    const filePath = path.join(__dirname, fileName);
+
+    // Reading the file
+    fs.readFile(filePath, (err, data) => {
+        if (err) {
+            // If file not found or any other error occurs, send 404 status
+            res.writeHead(404, { 'Content-Type': 'text/plain' });
+            res.end('404 Not Found');
+        } else {
+            // If file is found, send the content
+            res.writeHead(200, { 'Content-Type': 'text/plain' });
+            res.end(data);
+        }
+    });
+});
+
+// Handling server setup errors
+server.on('error', (error) => {
+    if (error.code === 'EADDRINUSE') {
+        console.error('Port 3000 is already in use. Trying another port...');
+        server.listen(0); // Listen on a random available port
+    } else {
+        console.error('An error occurred while setting up the server:', error);
+    }
+});
+
+server.on('listening', () => {
+    const address = server.address();
+    console.log(`Server is running on port ${address.port}`);
+});
+
+server.listen(8082); // Start the server on port 3000

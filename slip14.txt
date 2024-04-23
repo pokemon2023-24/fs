@@ -1,0 +1,67 @@
+//Slip 14
+
+//Q.1) Create a Simple Web Server using node js. 
+
+//<!--Node.js-->
+
+var http = require('http');
+
+var server = http.createServer(function(req,res)
+{
+    res.writeHead(200,{'Content-type':'text/html'});
+    res.end('Hi Sir');
+}).listen(5000);
+
+
+----------------------------------------------------------------------------------------------------------------------------------
+//Q.2) Create an HTML form that contain the Employee Registration details and write a JavaScript to validate DOB, Joining Date, and Salary. 
+
+//<!--HTML-->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>College Information</title>
+    </head>
+    <style>
+        body {
+            font-family: 'Times New Roman', Times, serif;
+            font-size: medium;
+            color: aqua;
+            text-align: center;
+        }
+
+        .split1 {
+            height: 100%;
+            width: 50%;
+            overflow-x: auto;
+            float: left;
+        }
+
+        .split2 {
+            height: 100%;
+            width: 50%;
+            overflow-x: auto;
+            float: left;
+        }
+    </style>
+
+
+<body>
+    <h1>College Information</h1>
+    <div class="split1">
+        <h1><a href="Courses.html" target="a">Courses</a></h1>
+            <h1><a href="Department.html" target="a">Department</a></h1>
+                <h1><a href="Location.html" target="a">Location</a></h1>
+    </div>
+    <div class="split2">
+        <iframe name="a" width="100%" height="100%"></iframe>
+    </div>
+</body>
+
+</html>
+
+

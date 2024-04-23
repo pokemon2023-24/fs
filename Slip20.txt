@@ -1,0 +1,116 @@
+Q1.Create a Node.js file that demonstrate create student database and table in MySQL
+
+// Importing required modules
+const mysql = require('mysql');
+
+// MySQL database connection configuration
+const connection = mysql.createConnection({
+  host: 'localhost',
+  user: 'root',
+  password: 'root'
+});
+
+// Connect to MySQL database
+connection.connect((err) => {
+  if (err) {
+    console.error('Error connecting to MySQL database: ' + err.stack);
+    return;
+  }
+  console.log('Connected to MySQL database as id ' + connection.threadId);
+  
+  // Creating a database named 'students'
+  connection.query('CREATE DATABASE IF NOT EXISTS students', (err, result) => {
+    if (err) {
+      console.error('Error creating database: ' + err.stack);
+      return;
+    }
+    console.log('Database "students" created successfully');
+    
+    // Using 'students' database
+    connection.query('USE students', (err, result) => {
+      if (err) {
+        console.error('Error using database: ' + err.stack);
+        return;
+      }
+      console.log('Using database "students"');
+      
+      // Creating a table named 'students_info'
+      const createTableQuery = `
+      CREATE TABLE IF NOT EXISTS students_info (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        name VARCHAR(255),
+        age INT,
+        grade VARCHAR(10)
+      )
+      `;
+      connection.query(createTableQuery, (err, result) => {
+        if (err) {
+          console.error('Error creating table: ' + err.stack);
+          return;
+        }
+        console.log('Table "students_info" created successfully');
+        
+        // // Disconnect from MySQL database
+         connection.end((err) => {
+           if (err) {
+             console.error('Error disconnecting from MySQL database: ' + err.stack);
+             return;
+           }
+           console.log('Disconnected from MySQL database');
+        });
+      });
+    });
+  });
+});
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Q2. Using angular js create a SPA to carry out validation for a username entered in a textbox. If the
+textbox is blank, alert “Enter username”. If the number of characters is less than three, alert ‟
+Username is too short”. If value entered is appropriate the print “Valid username” and
+password should be minimum 8 characters.
+
+<!DOCTYPE html>
+<html ng-app="validationApp">
+<head>
+    <title>Username and Password Validation</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+</head>
+<body>
+
+<div ng-controller="ValidationController">
+    <h2>Username and Password Validation</h2>
+    <form name="validationForm" ng-submit="submitForm()">
+        <label>Username:</label>
+        <input type="text" ng-model="user.username" required>
+        <br>
+        <label>Password:</label>
+        <input type="password" ng-model="user.password" required>
+        <br>
+        <button type="submit">Submit</button>
+    </form>
+</div>
+
+<script>
+var app = angular.module('validationApp', []);
+
+app.controller('ValidationController', function($scope) {
+    $scope.submitForm = function() {
+        if (!$scope.user.username) {
+            alert("Enter username");
+            return;
+        }
+        if ($scope.user.username.length < 3) {
+            alert("Username is too short");
+            return;
+        }
+        if ($scope.user.password.length < 8) {
+            alert("Password is too short");
+            return;
+        }
+        alert("Valid username and password!");
+    };
+});
+</script>
+
+</body>
+</html>
+

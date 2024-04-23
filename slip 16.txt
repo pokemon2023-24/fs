@@ -1,0 +1,168 @@
+//Q.1) Using node js create a Recipe Book.
+
+const express = require('express');
+const app = express();
+const PORT = process.env.PORT || 3000;
+
+let recipes = [];
+
+app.use(express.json());
+
+// Define routes for handling recipes
+
+// Get all recipes
+app.get('/recipes', (req, res) => {
+  res.json(recipes);
+});
+
+// Add a new recipe
+app.post('/recipes', (req, res) => {
+  const { name, ingredients } = req.body;
+  const newRecipe = { id: recipes.length + 1, name, ingredients };
+  recipes.push(newRecipe);
+  res.status(201).json(newRecipe);
+});
+
+// Get a specific recipe by ID
+app.get('/recipes/:id', (req, res) => {
+  const recipe = recipes.find(recipe => recipe.id === parseInt(req.params.id));
+  if (!recipe) return res.status(404).send('Recipe not found');
+  res.json(recipe);
+});
+
+// Update a recipe
+app.put('/recipes/:id', (req, res) => {
+  const { name, ingredients } = req.body;
+  const recipe = recipes.find(recipe => recipe.id === parseInt(req.params.id));
+  if (!recipe) return res.status(404).send('Recipe not found');
+  recipe.name = name;
+  recipe.ingredients = ingredients;
+  res.json(recipe);
+});
+
+// Delete a recipe
+app.delete('/recipes/:id', (req, res) => {
+  recipes = recipes.filter(recipe => recipe.id !== parseInt(req.params.id));
+  res.sendStatus(204);
+});
+
+// Define a default response for requests to the root URL
+app.get('/', (req, res) => {
+  res.send('Welcome to the Recipe Book API');
+});
+
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
+});
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+/*Q.2] Create a js file named main.js for event-driven application. There should be a main loop that listens for events, and then triggers a call-back function
+ when one of those events is detected.*/
+
+
+// Define an array to store event listeners
+const eventListeners = {};
+
+// Function to add event listeners
+function addEventListener(event, callback) {
+  if (!eventListeners[event]) {
+    eventListeners[event] = [];
+  }
+  eventListeners[event].push(callback);
+}
+
+// Function to emit events
+function emitEvent(event, data) {
+  if (eventListeners[event]) {
+    eventListeners[event].forEach(callback => {
+      callback(data);
+    });
+  }
+}
+
+// Example event listeners
+function eventHandler1(data) {
+  console.log('Event 1 occurred with data:', data);
+}
+
+function eventHandler2(data) {
+  console.log('Event 2 occurred with data:', data);
+}
+
+// Add event listeners
+addEventListener('event1', eventHandler1);
+addEventListener('event2', eventHandler2);
+
+// Define the main loop that listens for events
+function mainLoop() {
+  // Simulate events being emitted
+  setInterval(() => {
+    const randomEvent = Math.random() < 0.5 ? 'event1' : 'event2';
+    const randomData = Math.random();
+    emitEvent(randomEvent, randomData);
+  }, 2000); // Emit events every 2 seconds
+}
+
+// Start the main loop
+mainLoop();
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+---------------------------------------------------------------------------------------------------------------------------------------------
+
+

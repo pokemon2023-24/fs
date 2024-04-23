@@ -1,0 +1,116 @@
+//Slip 13
+//Q.1) Create a Node.js file that will convert the output "HELLO WORLD!" into lower-case letters. 
+
+//<!--Node.js-->
+
+// Importing the built-in file system module
+const fs = require('fs');
+
+// Function to convert text to lower-case
+function convertToLowerCase(text) {
+    return text.toLowerCase();
+}
+
+// Read the input text from a file
+fs.readFile('input.txt', 'utf8', (err, data) => {
+    if (err) {
+        console.error('Error reading file:', err);
+        return;
+    }
+    
+    // Convert the text to lower-case
+    const lowerCaseText = convertToLowerCase(data);
+
+    // Print the lower-case text
+    console.log('Lower-case text:', lowerCaseText);
+});
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+//Q.2) Create an HTML form that contain the Student Registration details and write a JavaScript to 
+validate Student first and last name as it should not contain other than alphabets and age should 
+be between 18 to 50.
+
+//<!--HTML-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Student Registration Form</title>
+<style>
+    .error { color: red; }
+</style>
+</head>
+<body>
+
+<h2>Student Registration Form</h2>
+
+<form id="registrationForm">
+    <div>
+        <label for="firstName">First Name:</label>
+        <input type="text" id="firstName" name="firstName">
+        <span id="firstNameError" class="error"></span>
+    </div>
+    <div>
+        <label for="lastName">Last Name:</label>
+        <input type="text" id="lastName" name="lastName">
+        <span id="lastNameError" class="error"></span>
+    </div>
+    <div>
+        <label for="age">Age:</label>
+        <input type="number" id="age" name="age" min="18" max="50">
+        <span id="ageError" class="error"></span>
+    </div>
+    <div>
+        <button type="submit">Submit</button>
+    </div>
+</form>
+
+<script>
+    document.getElementById('registrationForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        // Reset error messages
+        document.getElementById('firstNameError').textContent = '';
+        document.getElementById('lastNameError').textContent = '';
+        document.getElementById('ageError').textContent = '';
+
+        // Get form values
+        const firstName = document.getElementById('firstName').value.trim();
+        const lastName = document.getElementById('lastName').value.trim();
+        const age = document.getElementById('age').value;
+
+        // Validation
+        const nameRegex = /^[A-Za-z]+$/;
+        const ageValue = parseInt(age);
+
+        let isValid = true;
+
+        if (!nameRegex.test(firstName)) {
+            document.getElementById('firstNameError').textContent = 'First name should contain only alphabets';
+            isValid = false;
+        }
+
+        if (!nameRegex.test(lastName)) {
+            document.getElementById('lastNameError').textContent = 'Last name should contain only alphabets';
+            isValid = false;
+        }
+
+        if (ageValue < 18 || ageValue > 50) {
+            document.getElementById('ageError').textContent = 'Age should be between 18 and 50';
+            isValid = false;
+        }
+
+        if (isValid) {
+            // Form is valid, can proceed with submission or other actions
+            console.log('Form submitted successfully!');
+        } else {
+            // Form is not valid, prevent submission
+            console.log('Form validation failed!');
+        }
+    });
+</script>
+
+</body>
+</html>
