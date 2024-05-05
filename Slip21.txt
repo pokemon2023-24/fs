@@ -1,51 +1,51 @@
 Q1 Create a Node.js file that demonstrate create Movie database and table in MySQL
 // app.js
 
-const express = require('express');
-const sqlite3 = require('sqlite3').verbose();
+const mysql = require('mysql');
 
-const app = express();
-const PORT = process.env.PORT || 3001;
-
-// Create and connect to SQLite database
-const db = new sqlite3.Database(':memory:');
-
-// Create a table
-db.serialize(() => {
-  db.run("CREATE TABLE users (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT)");
+// Create a connection to the MySQL database
+const connection = mysql.createConnection({
+  host: 'localhost',
+  user: 'your_username',
+  password: 'your_password',
+  database: 'your_database_name'
 });
 
-// Express route to fetch all users
-app.get('/users', (req, res) => {
-  db.all("SELECT * FROM users", (err, rows) => {
-    if (err) {
-      res.status(500).json({ error: err.message });
-      return;
-    }
-    res.json({ users: rows });
+// Connect to the database
+connection.connect((err) => {
+  if (err) throw err;
+  console.log('Connected to MySQL database');
+
+  // Create the movie table
+  const createTableQuery = `
+    CREATE TABLE IF NOT EXISTS movies (
+      id INT AUTO_INCREMENT PRIMARY KEY,
+      title VARCHAR(255) NOT NULL,
+      director VARCHAR(255),
+      release_year INT
+    )
+  `;
+
+  connection.query(createTableQuery, (err, result) => {
+    if (err) throw err;
+    console.log('Movie table created successfully');
+    // Insert some sample data into the table
+    const insertDataQuery = `
+      INSERT INTO movies (title, director, release_year)
+      VALUES 
+        ('The Shawshank Redemption', 'Frank Darabont', 1994),
+        ('The Godfather', 'Francis Ford Coppola', 1972),
+        ('The Dark Knight', 'Christopher Nolan', 2008)
+    `;
+    connection.query(insertDataQuery, (err, result) => {
+      if (err) throw err;
+      console.log('Sample data inserted into the movie table');
+      // Close the connection
+      connection.end();
+    });
   });
 });
 
-// Express route to add a new user
-app.post('/users', (req, res) => {
-  const { name } = req.body;
-  if (!name) {
-    res.status(400).json({ error: 'Name is required' });
-    return;
-  }
-
-  db.run("INSERT INTO users (name) VALUES (?)", [name], function(err) {
-    if (err) {
-      res.status(500).json({ error: err.message });
-      return;
-    }
-    res.json({ id: this.lastID });
-  });
-});
-
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-});
 --------------------------------------------------------------------------------------------------------------------------------
 Q2 ) Write node js application that transfer a file as an attachment on web and enables browser to
 prompt the user to download file using express js.
